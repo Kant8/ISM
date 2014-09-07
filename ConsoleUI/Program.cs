@@ -1,5 +1,6 @@
 ﻿using System;
 using Crypto;
+using Crypto.Caesar;
 
 namespace ConsoleUI
 {
