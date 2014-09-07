@@ -10,8 +10,8 @@ namespace Crypto
     {
         string Key { get; set; }
 
-        string Encode(string message);
+        byte[] Encode(byte[] message);
 
-        string Decode(string message);
+        byte[] Decode(byte[] message);
     }
 }

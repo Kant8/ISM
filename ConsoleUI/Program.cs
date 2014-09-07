@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text;
 using Crypto;
 using Crypto.Caesar;
+using Crypto.Scrambler;
 
 namespace ConsoleUI
 {
@@ -35,16 +37,18 @@ namespace ConsoleUI
 
                 try
                 {
+                    //((Scrambler)coder).Test(message);
 
                     Console.WriteLine("\n\nEncoded message:" + Environment.NewLine);
-                    var encodedMessage = coder.Encode(message);
-                    Console.WriteLine(encodedMessage);
+                    var encodedMessage = coder.Encode(Encoding.Unicode.GetBytes(message));
+                    Console.WriteLine(Encoding.Unicode.GetString(encodedMessage));
 
                     Console.WriteLine("\n\nDecoded message:" + Environment.NewLine);
                     var decodedMessage = coder.Decode(encodedMessage);
-                    Console.WriteLine(decodedMessage);
+                    Console.WriteLine(Encoding.Unicode.GetString(decodedMessage));
 
-                    Console.WriteLine("\n\nAre input and decoded equal? - " + (message == decodedMessage));
+                    Console.WriteLine("\n\nAre input and decoded equal? - " 
+                        + (message == Encoding.Unicode.GetString(decodedMessage)));
                 }
                 catch (Exception ex)
                 {

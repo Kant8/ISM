@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 namespace Crypto.Caesar
 {
@@ -10,9 +11,9 @@ namespace Crypto.Caesar
 
         public string Key { get; set; }
 
-        public string Encode(string message)
+        public byte[] Encode(byte[] message)
         {
-            var chars = message.ToCharArray();
+            var chars = Encoding.Unicode.GetChars(message);
             var shift = GetShift();
 
             var encodedMessage = new char[chars.Length];
@@ -21,12 +22,12 @@ namespace Crypto.Caesar
                 var encodedC = chars[i] + shift;
                 encodedMessage[i] = (char)encodedC.Mod(AlphabetSize);
             }
-            return encodedMessage.ToCharString();
+            return Encoding.Unicode.GetBytes(encodedMessage);
         }
 
-        public string Decode(string message)
+        public byte[] Decode(byte[] message)
         {
-            var chars = message.ToCharArray();
+            var chars = Encoding.Unicode.GetChars(message);
             var shift = GetShift();
 
             var decodedMessage = new char[chars.Length];
@@ -35,7 +36,7 @@ namespace Crypto.Caesar
                 var decodedC = chars[i] - shift;
                 decodedMessage[i] = (char)decodedC.Mod(AlphabetSize);
             }
-            return decodedMessage.ToCharString();
+            return Encoding.Unicode.GetBytes(decodedMessage);
         }
 
         #endregion ICryptoCoder
