@@ -8,6 +8,8 @@ namespace Crypto
 {
     public class Caesar : ICryptoCoder
     {
+        public const int AlphabetSize = char.MaxValue - char.MinValue + 1;
+
         public string Encode(string message, object key)
         {
             var chars = message.ToCharArray();
@@ -17,7 +19,7 @@ namespace Crypto
             for (int i = 0; i < chars.Length; i++)
             {
                 var encodedC = chars[i] + shift;
-                encodedMessage[i] = (char)encodedC;
+                encodedMessage[i] = (char)encodedC.Mod(AlphabetSize);
             }
             return encodedMessage.ToCharString();
         }
@@ -31,7 +33,7 @@ namespace Crypto
             for (int i = 0; i < chars.Length; i++)
             {
                 var decodedC = chars[i] - shift;
-                decodedMessage[i] = (char)decodedC;
+                decodedMessage[i] = (char)decodedC.Mod(AlphabetSize);
             }
             return decodedMessage.ToCharString();
         }
