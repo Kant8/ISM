@@ -43,6 +43,7 @@
     <Compile Include="Helper.cs" />
     <Compile Include="ICryptoCoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scrambler\LinearFeedbackShiftRegister.cs" />
     <Compile Include="Scrambler\Scrambler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

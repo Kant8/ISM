@@ -17,9 +17,9 @@ namespace ConsoleUI
                              + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + Environment.NewLine
                              + "abcdefghijklmnopqrstuvwxyz" + Environment.NewLine;
 
-            ICryptoCoder coder;
+            ICryptoCoder coder = null;
 
-            coder = new Caesar();
+            coder = new Scrambler();
 
             while (true)
             {
@@ -37,8 +37,6 @@ namespace ConsoleUI
 
                 try
                 {
-                    //((Scrambler)coder).Test(message);
-
                     Console.WriteLine("\n\nEncoded message:" + Environment.NewLine);
                     var encodedMessage = coder.Encode(Encoding.Unicode.GetBytes(message));
                     Console.WriteLine(Encoding.Unicode.GetString(encodedMessage));
