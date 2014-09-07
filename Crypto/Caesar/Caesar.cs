@@ -1,3 +1,5 @@
+using System;
+
 namespace Crypto.Caesar
 {
     public class Caesar : ICryptoCoder
@@ -11,7 +13,7 @@ namespace Crypto.Caesar
         public string Encode(string message)
         {
             var chars = message.ToCharArray();
-            var shift = (int)Key;
+            var shift = GetShift();
 
             var encodedMessage = new char[chars.Length];
             for (int i = 0; i < chars.Length; i++)
@@ -25,7 +27,7 @@ namespace Crypto.Caesar
         public string Decode(string message)
         {
             var chars = message.ToCharArray();
-            var shift = (int)Key;
+            var shift = GetShift();
 
             var decodedMessage = new char[chars.Length];
             for (int i = 0; i < chars.Length; i++)
@@ -37,5 +39,12 @@ namespace Crypto.Caesar
         }
 
         #endregion ICryptoCoder
+
+        private int GetShift()
+        {
+            if (Key is int)
+                return (int)Key;
+            throw new ArgumentException("Key should be int.");
+        }
     }
 }
