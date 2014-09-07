@@ -26,28 +26,30 @@ namespace ConsoleUI
                 Console.WriteLine("Input message:\n");
                 Console.WriteLine(message);
 
-                Console.Write("Enter shift: ");
-                var stringShift = Console.ReadLine();
-                if (String.IsNullOrEmpty(stringShift))
+                Console.Write("Enter key: ");
+                var key = Console.ReadLine();
+                if (String.IsNullOrEmpty(key))
                     break;
-                int shift;
-                if (!Int32.TryParse(stringShift, out shift))
+
+                coder.Key = key;
+
+                try
                 {
-                    Console.WriteLine("Illegal input. Try again");
-                    continue;
+
+                    Console.WriteLine("\n\nEncoded message:" + Environment.NewLine);
+                    var encodedMessage = coder.Encode(message);
+                    Console.WriteLine(encodedMessage);
+
+                    Console.WriteLine("\n\nDecoded message:" + Environment.NewLine);
+                    var decodedMessage = coder.Decode(encodedMessage);
+                    Console.WriteLine(decodedMessage);
+
+                    Console.WriteLine("\n\nAre input and decoded equal? - " + (message == decodedMessage));
                 }
-
-                coder.Key = shift;
-
-                Console.WriteLine("\n\nEncoded message:" + Environment.NewLine);
-                var encodedMessage = coder.Encode(message);
-                Console.WriteLine(encodedMessage);
-
-                Console.WriteLine("\n\nDecoded message:" + Environment.NewLine);
-                var decodedMessage = coder.Decode(encodedMessage);
-                Console.WriteLine(decodedMessage);
-
-                Console.WriteLine("\n\nAre input and decoded equal? - " + (message == decodedMessage));
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
                 Console.ReadLine();
             }
         }

@@ -8,7 +8,7 @@ namespace Crypto.Caesar
 
         #region ICryptoCoder
 
-        public object Key { get; set; }
+        public string Key { get; set; }
 
         public string Encode(string message)
         {
@@ -42,8 +42,9 @@ namespace Crypto.Caesar
 
         private int GetShift()
         {
-            if (Key is int)
-                return (int)Key;
+            int shift;
+            if (Int32.TryParse(Key, out shift))
+                return shift;
             throw new ArgumentException("Key should be int.");
         }
     }

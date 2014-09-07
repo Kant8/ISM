@@ -8,7 +8,7 @@ namespace Crypto
 {
     public interface ICryptoCoder
     {
-        object Key { get; set; }
+        string Key { get; set; }
 
         string Encode(string message);
 
