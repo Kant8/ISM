@@ -37,12 +37,14 @@ namespace ConsoleUI
                     continue;
                 }
 
+                coder.Key = shift;
+
                 Console.WriteLine("\n\nEncoded message:" + Environment.NewLine);
-                var encodedMessage = coder.Encode(message, shift);
+                var encodedMessage = coder.Encode(message);
                 Console.WriteLine(encodedMessage);
 
                 Console.WriteLine("\n\nDecoded message:" + Environment.NewLine);
-                var decodedMessage = coder.Decode(encodedMessage, shift);
+                var decodedMessage = coder.Decode(encodedMessage);
                 Console.WriteLine(decodedMessage);
 
                 Console.WriteLine("\n\nAre input and decoded equal? - " + (message == decodedMessage));

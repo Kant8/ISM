@@ -8,8 +8,10 @@ namespace Crypto
 {
     public interface ICryptoCoder
     {
-        string Encode(string message, object key);
+        object Key { get; set; }
 
-        string Decode(string message, object key);
+        string Encode(string message);
+
+        string Decode(string message);
     }
 }

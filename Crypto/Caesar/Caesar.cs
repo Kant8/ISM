@@ -4,10 +4,14 @@ namespace Crypto.Caesar
     {
         public const int AlphabetSize = char.MaxValue - char.MinValue + 1;
 
-        public string Encode(string message, object key)
+        #region ICryptoCoder
+
+        public object Key { get; set; }
+
+        public string Encode(string message)
         {
             var chars = message.ToCharArray();
-            var shift = (int)key;
+            var shift = (int)Key;
 
             var encodedMessage = new char[chars.Length];
             for (int i = 0; i < chars.Length; i++)
@@ -18,10 +22,10 @@ namespace Crypto.Caesar
             return encodedMessage.ToCharString();
         }
 
-        public string Decode(string message, object key)
+        public string Decode(string message)
         {
             var chars = message.ToCharArray();
-            var shift = (int)key;
+            var shift = (int)Key;
 
             var decodedMessage = new char[chars.Length];
             for (int i = 0; i < chars.Length; i++)
@@ -31,5 +35,7 @@ namespace Crypto.Caesar
             }
             return decodedMessage.ToCharString();
         }
+
+        #endregion ICryptoCoder
     }
 }
