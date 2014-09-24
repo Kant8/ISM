@@ -18,5 +18,15 @@ namespace Crypto
             int r = x % m;
             return r > 0 ? r + m : r;
         }
+
+        public static string GetUtf16String(this byte[] arr)
+        {
+            return Encoding.Unicode.GetString(arr);
+        }
+
+        public static byte[] GetUtf16Bytes(this string str)
+        {
+            return Encoding.Unicode.GetBytes(str);
+        }
     }
 }
