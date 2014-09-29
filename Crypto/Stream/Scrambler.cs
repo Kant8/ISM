@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Text;
-using System.Linq;
 
-namespace Crypto.Scrambler
+namespace Crypto.Stream
 {
     public class Scrambler : ICryptoCoder
     {

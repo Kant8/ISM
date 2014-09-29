@@ -1,4 +1,4 @@
-﻿namespace Crypto.Scrambler
+﻿namespace Crypto.Stream
 {
     public class LinearFeedbackShiftRegister
     {

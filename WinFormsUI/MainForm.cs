@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Crypto;
-using Crypto.Caesar;
-using Crypto.Scrambler;
+using Crypto.Block;
+using Crypto.Shift;
+using Crypto.Stream;
 
 namespace WinFormsUI
 {
@@ -91,6 +92,11 @@ namespace WinFormsUI
             {
                 checkBoxOneKey.Checked = true;
                 return new Scrambler();
+            }
+            if (radioButtonFeistel.Checked)
+            {
+                checkBoxOneKey.Checked = true;
+                return new Feistel();
             }
             throw new InvalidEnumArgumentException("Не выбран алгоритм шифрования");
         }

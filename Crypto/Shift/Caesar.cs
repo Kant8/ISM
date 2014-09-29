@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Crypto.Caesar
+namespace Crypto.Shift
 {
     public class Caesar : ICryptoCoder
     {

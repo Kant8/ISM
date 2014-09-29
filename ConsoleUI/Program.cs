@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Text;
 using Crypto;
-using Crypto.Caesar;
-using Crypto.Scrambler;
+using Crypto.Stream;
 
 namespace ConsoleUI
 {

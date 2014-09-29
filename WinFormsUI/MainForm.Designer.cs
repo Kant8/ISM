@@ -47,6 +47,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.checkBoxOneKey = new System.Windows.Forms.CheckBox();
             this.checkBoxAreSame = new System.Windows.Forms.CheckBox();
+            this.radioButtonFeistel = new System.Windows.Forms.RadioButton();
             this.panel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -168,6 +169,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.radioButtonFeistel);
             this.groupBox1.Controls.Add(this.radioButtonScrambler);
             this.groupBox1.Controls.Add(this.radioButtonCaesar);
             this.groupBox1.Location = new System.Drawing.Point(12, 368);
@@ -262,6 +264,17 @@
             this.checkBoxAreSame.Text = "Совпадение";
             this.checkBoxAreSame.UseVisualStyleBackColor = true;
             // 
+            // radioButtonFeistel
+            // 
+            this.radioButtonFeistel.AutoSize = true;
+            this.radioButtonFeistel.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.radioButtonFeistel.Location = new System.Drawing.Point(189, 19);
+            this.radioButtonFeistel.Name = "radioButtonFeistel";
+            this.radioButtonFeistel.Size = new System.Drawing.Size(63, 30);
+            this.radioButtonFeistel.TabIndex = 2;
+            this.radioButtonFeistel.Text = "Фейстель";
+            this.radioButtonFeistel.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -312,6 +325,7 @@
         private System.Windows.Forms.RadioButton radioButtonScrambler;
         private System.Windows.Forms.RadioButton radioButtonCaesar;
         private System.Windows.Forms.CheckBox checkBoxAreSame;
+        private System.Windows.Forms.RadioButton radioButtonFeistel;
     }
 }
 
