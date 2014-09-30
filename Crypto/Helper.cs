@@ -44,7 +44,29 @@ namespace Crypto
             return (UInt64)hiWord << 32 | loWord;
         }
 
-        static string ToBitString(this UInt32 x)
+        public static string ToBitString(this UInt64 x)
+        {
+            char[] b = new char[64];
+            int pos = 63;
+            int i = 0;
+
+            while (i < 64)
+            {
+                if ((x & ((UInt64)1 << i)) != 0)
+                {
+                    b[pos] = '1';
+                }
+                else
+                {
+                    b[pos] = '0';
+                }
+                pos--;
+                i++;
+            }
+            return new string(b);
+        }
+
+        public static string ToBitString(this UInt32 x)
         {
             char[] b = new char[32];
             int pos = 31;
@@ -64,6 +86,80 @@ namespace Crypto
                 i++;
             }
             return new string(b);
+        }
+
+        public static void SetBit(ref UInt64 x, int index, bool bit)
+        {
+            UInt64 mask = (UInt64)1 << index;
+            if (bit)
+                x &= ~mask;
+            else
+                x |= mask;
+        }
+
+        public static void SetBit(ref UInt32 x, int index, bool bit)
+        {
+            UInt32 mask = (UInt32)1 << index;
+            if (bit)
+                x &= ~mask;
+            else
+                x |= mask;
+        }
+
+        public static void SetBit(ref Byte x, int index, bool bit)
+        {
+            Byte mask = (Byte)(1 << index);
+            if (bit)
+                x &= (Byte)~mask;
+            else
+                x |= mask;
+        }
+
+        public static bool GetBit(this UInt64 x, int index)
+        {
+            UInt64 mask = (UInt64)1 << index;
+            var res = x & mask;
+            return res > 0;
+        }
+
+        public static bool GetBit(this UInt32 x, int index)
+        {
+            UInt32 mask = (UInt32)1 << index;
+            var res = x & mask;
+            return res > 0;
+        }
+
+        public static bool GetBit(this Byte x, int index)
+        {
+            Byte mask = (Byte)(1 << index);
+            var res = x & mask;
+            return res > 0;
+        }
+
+        public static UInt64[] SplitInBlocks(byte[] message)
+        {
+            var blocksCount = message.Length / 8;
+            if (blocksCount % 8 != 0)
+                blocksCount++;
+            var alignedMessage = new byte[blocksCount * 8];
+            message.CopyTo(alignedMessage, 0);
+
+            var blocks = new UInt64[blocksCount];
+            for (int i = 0; i < blocksCount; i++)
+            {
+                blocks[i] = BitConverter.ToUInt64(alignedMessage, i * 8);
+            }
+            return blocks;
+        }
+
+        public static byte[] CombineBlocks(UInt64[] blocks)
+        {
+            var message = new byte[blocks.Length * 8];
+            for (int i = 0; i < blocks.Length; i++)
+            {
+                BitConverter.GetBytes(blocks[i]).CopyTo(message, i * 8);
+            }
+            return message;
         }
 
         public static byte[] Trim(this byte[] arr, int length)

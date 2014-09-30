@@ -14,11 +14,11 @@ namespace Crypto.Block
         {
             _roundKeys = GenerateRoundKeys(Key);
 
-            var blocks = SplitInBlocks(message);
+            var blocks = Helper.SplitInBlocks(message);
 
             var encodedBlocks = blocks.Select(EncodeBlock).ToArray();
 
-            var encodedMessage = CombineBlocks(encodedBlocks);
+            var encodedMessage = Helper.CombineBlocks(encodedBlocks);
 
             return encodedMessage;
         }
@@ -27,11 +27,11 @@ namespace Crypto.Block
         {
             _roundKeys = GenerateRoundKeys(Key);
 
-            var blocks = SplitInBlocks(message);
+            var blocks = Helper.SplitInBlocks(message);
 
             var decodedBlocks = blocks.Select(DecodeBlock).ToArray();
 
-            var decodedMessage = CombineBlocks(decodedBlocks);
+            var decodedMessage = Helper.CombineBlocks(decodedBlocks);
 
             return decodedMessage;
         }
@@ -99,33 +99,6 @@ namespace Crypto.Block
             right = temp;
             return left.Combine(right);
         }
-
-        private UInt64[] SplitInBlocks(byte[] message)
-        {
-            var blocksCount = message.Length / 8;
-            if (blocksCount % 8 != 0)
-                blocksCount++;
-            var alignedMessage = new byte[blocksCount * 8];
-            message.CopyTo(alignedMessage, 0);
-
-            var blocks = new UInt64[blocksCount];
-            for (int i = 0; i < blocksCount; i++)
-            {
-                blocks[i] = BitConverter.ToUInt64(alignedMessage, i*8);
-            }
-            return blocks;
-        }
-
-        private byte[] CombineBlocks(UInt64[] blocks)
-        {
-            var message = new byte[blocks.Length*8];
-            for (int i = 0; i < blocks.Length; i++)
-            {
-                BitConverter.GetBytes(blocks[i]).CopyTo(message, i*8);
-            }
-            return message;
-        }
-
 
         #region Base Functions
 
