@@ -98,6 +98,11 @@ namespace WinFormsUI
                 checkBoxOneKey.Checked = true;
                 return new Feistel();
             }
+            if (radioButtonDes.Checked)
+            {
+                checkBoxOneKey.Checked = true;
+                return new Des();
+            }
             throw new InvalidEnumArgumentException("Не выбран алгоритм шифрования");
         }
 

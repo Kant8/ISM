@@ -92,27 +92,28 @@ namespace Crypto
         {
             UInt64 mask = (UInt64)1 << index;
             if (bit)
-                x &= ~mask;
-            else
                 x |= mask;
+            else
+                x &= ~mask;
         }
 
         public static void SetBit(ref UInt32 x, int index, bool bit)
         {
             UInt32 mask = (UInt32)1 << index;
             if (bit)
-                x &= ~mask;
-            else
                 x |= mask;
+            else
+                x &= ~mask;
         }
 
         public static void SetBit(ref Byte x, int index, bool bit)
         {
             Byte mask = (Byte)(1 << index);
             if (bit)
-                x &= (Byte)~mask;
-            else
                 x |= mask;
+            else
+                x &= (Byte)~mask;
+                
         }
 
         public static bool GetBit(this UInt64 x, int index)
