@@ -50,18 +50,14 @@ namespace Crypto.Block
         {
             UInt64 ipBlock = BlockHelper.PermutateBlock(block, IpTable);
 
-            var left = ipBlock.HiWord();
-            var right = ipBlock.LoWord();
-            uint temp;
+            UInt32 left = ipBlock.HiWord();
+            UInt32 right = ipBlock.LoWord();
             for (int i = 0; i < RoundsCount; i++)
             {
-                temp = left ^ FeistelFunc(right, _roundKeys[i]);
-                right = left;
+                var temp = right;
+                right = left ^ FeistelFunc(right, _roundKeys[i]);
                 left = temp;
             }
-            temp = left;
-            left = right;
-            right = temp;
 
             UInt64 feistelBlock = left.Combine(right);
 
@@ -73,18 +69,14 @@ namespace Crypto.Block
         {
             UInt64 ipBlock = BlockHelper.PermutateBlock(block, IpTable);
 
-            var left = ipBlock.HiWord();
-            var right = ipBlock.LoWord();
-            uint temp;
+            UInt32 left = ipBlock.HiWord();
+            UInt32 right = ipBlock.LoWord();
             for (int i = RoundsCount - 1; i >= 0; i--)
             {
-                temp = left ^ FeistelFunc(right, _roundKeys[i]);
-                right = left;
-                left = temp;
+                var temp = left;
+                left = right ^ FeistelFunc(left, _roundKeys[i]);
+                right = temp;
             }
-            temp = left;
-            left = right;
-            right = temp;
 
             UInt64 feistelBlock = left.Combine(right);
 

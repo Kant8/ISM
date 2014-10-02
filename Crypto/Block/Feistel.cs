@@ -39,31 +39,7 @@ namespace Crypto.Block
 
         #endregion ICryptoCoder
 
-        public Feistel()
-        {
-            RoundsCount = 16;
-            RoundKeyGenFunc = GenerateRoundKeys;
-            CryptoFunc = EncryptSubBlock;
-        }
-
-        public Feistel(int roundsCount, Func<UInt32, byte[], UInt32> cryptoFunc, Func<string, List<byte[]>> roundKeyGenFunc)
-        {
-            RoundsCount = roundsCount;
-            CryptoFunc = cryptoFunc;
-            RoundKeyGenFunc = roundKeyGenFunc;
-        }
-
-        public int RoundsCount;
-
-        /// <summary>
-        /// block, key, result block
-        /// </summary>
-        public Func<UInt32, byte[], UInt32> CryptoFunc;
-
-        /// <summary>
-        /// initial key, result round keys
-        /// </summary>
-        public Func<string, List<byte[]>> RoundKeyGenFunc;
+        private const int RoundsCount = 16;
 
         private List<byte[]> _roundKeys;
 
@@ -74,13 +50,10 @@ namespace Crypto.Block
             uint temp;
             for (int i = 0; i < RoundsCount; i++)
             {
-                temp = left ^ CryptoFunc(right, _roundKeys[i]);
-                right = left;
+                temp = right;
+                right = left ^ FeistelFunc(right, _roundKeys[i]);
                 left = temp;
             }
-            temp = left;
-            left = right;
-            right = temp;
             return left.Combine(right);
         }
 
@@ -91,17 +64,12 @@ namespace Crypto.Block
             uint temp;
             for (int i = RoundsCount - 1; i >= 0; i--)
             {
-                temp = left ^ CryptoFunc(right, _roundKeys[i]);
-                right = left;
-                left = temp;
+                temp = left;
+                left = right ^ FeistelFunc(left, _roundKeys[i]);
+                right = temp;
             }
-            temp = left;
-            left = right;
-            right = temp;
             return left.Combine(right);
         }
-
-        #region Base Functions
 
         private List<byte[]> GenerateRoundKeys(string key)
         {
@@ -115,12 +83,10 @@ namespace Crypto.Block
             return roundKeys;
         }
 
-        private UInt32 EncryptSubBlock(UInt32 subBlock, byte[] roundKey)
+        private UInt32 FeistelFunc(UInt32 subBlock, byte[] roundKey)
         {
             var key = BitConverter.ToUInt32(roundKey, 0);
             return subBlock ^ key;
         }
-
-        #endregion Base Functions
     }
 }
