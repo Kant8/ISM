@@ -285,9 +285,18 @@ namespace Crypto.Block
             1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1
         };
 
+        private static readonly List<UInt64> WeakKeys = new List<UInt64>
+        {
+            0x0101010101010101UL, 0xFEFEFEFEFEFEFEFEUL, 
+            0x1F1F1F1F0E0E0E0EUL, 0xE0E0E0E0F1F1F1F1UL
+        };
+
         private List<UInt64> GenerateRoundKeys(string key)
         {
             var intKey = UInt64.Parse(key);
+
+            if (WeakKeys.Contains(intKey))
+                throw new ArgumentException("Ключ слабый. Введите другой ключ.");
 
             var roundKeys = new List<UInt64>(RoundsCount);
 
