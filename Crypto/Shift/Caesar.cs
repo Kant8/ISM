@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using Crypto.Helpers;
 
 namespace Crypto.Shift
 {

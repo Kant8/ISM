@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Crypto.Helpers;
 
 namespace Crypto.Block
 {
@@ -14,11 +15,11 @@ namespace Crypto.Block
         {
             _roundKeys = GenerateRoundKeys(Key);
 
-            var blocks = Helper.SplitInBlocks(message);
+            var blocks = BlockHelper.SplitInBlocks(message);
 
             var encodedBlocks = blocks.Select(EncodeBlock).ToArray();
 
-            var encodedMessage = Helper.CombineBlocks(encodedBlocks);
+            var encodedMessage = BlockHelper.CombineBlocks(encodedBlocks);
 
             return encodedMessage;
         }
@@ -27,11 +28,11 @@ namespace Crypto.Block
         {
             _roundKeys = GenerateRoundKeys(Key);
 
-            var blocks = Helper.SplitInBlocks(message);
+            var blocks = BlockHelper.SplitInBlocks(message);
 
             var decodedBlocks = blocks.Select(DecodeBlock).ToArray();
 
-            var decodedMessage = Helper.CombineBlocks(decodedBlocks);
+            var decodedMessage = BlockHelper.CombineBlocks(decodedBlocks);
 
             return decodedMessage;
         }

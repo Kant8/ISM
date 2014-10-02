@@ -1,14 +1,23 @@
 ﻿using System;
 using System.Text;
 using Crypto;
+using Crypto.Helpers;
 using Crypto.Stream;
 
 namespace ConsoleUI
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+
+            UInt32 block = 198974517;
+            block.ToBitString();
+            var result = RotateLeft28Bits(block, 3);
+
+
+            return;
+
             string message = "Hello my name is Andrey." + Environment.NewLine
                              + "Привет, меня зовут Андрей." + Environment.NewLine
                              + "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" + Environment.NewLine
@@ -44,8 +53,8 @@ namespace ConsoleUI
                     var decodedMessage = coder.Decode(encodedMessage);
                     Console.WriteLine(Encoding.Unicode.GetString(decodedMessage));
 
-                    Console.WriteLine("\n\nAre input and decoded equal? - " 
-                        + (message == Encoding.Unicode.GetString(decodedMessage)));
+                    Console.WriteLine("\n\nAre input and decoded equal? - "
+                                      + (message == Encoding.Unicode.GetString(decodedMessage)));
                 }
                 catch (Exception ex)
                 {
@@ -54,5 +63,20 @@ namespace ConsoleUI
                 Console.ReadLine();
             }
         }
+
+
+
+
+
+        private static UInt32 RotateLeft28Bits(UInt32 halfKey, byte n)
+        {
+            var result = (halfKey << n) | (halfKey >> (28 - n));
+            for (int i = 0; i < n; i++)
+            {
+                BitHelper.SetBit(ref result, 28 + i, false);
+            }
+            return result;
+        }
+
     }
 }

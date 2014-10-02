@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Crypto;
 using Crypto.Block;
+using Crypto.Helpers;
 using Crypto.Shift;
 using Crypto.Stream;
 

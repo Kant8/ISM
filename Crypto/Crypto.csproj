@@ -41,7 +41,9 @@
   <ItemGroup>
     <Compile Include="Block\DES.cs" />
     <Compile Include="Block\Feistel.cs" />
-    <Compile Include="Helper.cs" />
+    <Compile Include="Helpers\BitHelper.cs" />
+    <Compile Include="Helpers\BlockHelper.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="ICryptoCoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stream\LinearFeedbackShiftRegister.cs" />

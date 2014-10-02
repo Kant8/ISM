@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Crypto.Helpers;
 
 namespace Crypto.Block
 {
@@ -18,11 +19,11 @@ namespace Crypto.Block
         {
             _roundKeys = GenerateRoundKeys(Key);
 
-            var blocks = Helper.SplitInBlocks(message);
+            var blocks = BlockHelper.SplitInBlocks(message);
 
             var encodedBlocks = blocks.Select(EncodeBlock).ToArray();
 
-            var encodedMessage = Helper.CombineBlocks(encodedBlocks);
+            var encodedMessage = BlockHelper.CombineBlocks(encodedBlocks);
 
             return encodedMessage;
         }
@@ -31,11 +32,11 @@ namespace Crypto.Block
         {
             _roundKeys = GenerateRoundKeys(Key);
 
-            var blocks = Helper.SplitInBlocks(message);
+            var blocks = BlockHelper.SplitInBlocks(message);
 
             var decodedBlocks = blocks.Select(DecodeBlock).ToArray();
 
-            var decodedMessage = Helper.CombineBlocks(decodedBlocks);
+            var decodedMessage = BlockHelper.CombineBlocks(decodedBlocks);
 
             return decodedMessage;
         }
@@ -47,7 +48,7 @@ namespace Crypto.Block
 
         private UInt64 EncodeBlock(UInt64 block)
         {
-            UInt64 ipBlock = InitialPermutation(block);
+            UInt64 ipBlock = BlockHelper.PermutateBlock(block, IpTable);
 
             var left = ipBlock.HiWord();
             var right = ipBlock.LoWord();
@@ -64,13 +65,13 @@ namespace Crypto.Block
 
             UInt64 feistelBlock = left.Combine(right);
 
-            UInt64 encodedBlock = InitialPermutationReverse(feistelBlock);
+            UInt64 encodedBlock = BlockHelper.PermutateBlock(feistelBlock, IpRTable);
             return encodedBlock;
         }
 
         private UInt64 DecodeBlock(UInt64 block)
         {
-            UInt64 ipBlock = InitialPermutationReverse(block);
+            UInt64 ipBlock = BlockHelper.PermutateBlock(block, IpTable);
 
             var left = ipBlock.HiWord();
             var right = ipBlock.LoWord();
@@ -87,7 +88,7 @@ namespace Crypto.Block
 
             UInt64 feistelBlock = left.Combine(right);
 
-            UInt64 encodedBlock = InitialPermutation(feistelBlock);
+            UInt64 encodedBlock = BlockHelper.PermutateBlock(feistelBlock, IpRTable);
             return encodedBlock;
         }
 
@@ -107,7 +108,7 @@ namespace Crypto.Block
             for (int i = 0; i < IpTable.Length; i++)
             {
                 var bit = block.GetBit(IpTable[i] - 1);
-                Helper.SetBit(ref resultBlock, i, bit);
+                BitHelper.SetBit(ref resultBlock, i, bit);
             }
             return resultBlock;
         }
@@ -118,10 +119,10 @@ namespace Crypto.Block
 
         private UInt32 FeistelFunc(UInt32 subBlock, UInt64 roundKey)
         {
-            UInt64 expanded = Expansion(subBlock);
+            UInt64 expanded = BlockHelper.PermutateBlock(subBlock, ETable);
             UInt64 xored = expanded ^ roundKey;
-            UInt32 sblocked = Substitution(xored);
-            UInt32 permutated = Permutation(sblocked);
+            UInt32 substituted = Substitution(xored);
+            UInt32 permutated = (UInt32)BlockHelper.PermutateBlock(substituted, PTable);
             return permutated;
         }
 
@@ -136,17 +137,6 @@ namespace Crypto.Block
             24, 25, 26, 27, 28, 29,
             28, 29, 30, 31, 32, 1,
         };
-
-        private UInt64 Expansion(UInt32 block)
-        {
-            UInt64 resultBlock = 0;
-            for (int i = 0; i < ETable.Length; i++)
-            {
-                var bit = block.GetBit(ETable[i] - 1);
-                Helper.SetBit(ref resultBlock, i, bit);
-            }
-            return resultBlock;
-        }
 
         #region S Blocks
 
@@ -231,14 +221,21 @@ namespace Crypto.Block
             const int subBlocksCount = 8;
             for (var subBlockIndex = 0; subBlockIndex < subBlocksCount; subBlockIndex++)
             {
+                Byte subBlock = 0;
+                for (int i = 0; i < subBlockSize; i++)
+                {
+                    var bit = block.GetBit(subBlockIndex*subBlockSize + i);
+                    BitHelper.SetBit(ref subBlock, i, bit);
+                }
+
                 byte sRowIndex = 0;
-                Helper.SetBit(ref sRowIndex, 0, block.GetBit(subBlockIndex*subBlockSize));
-                Helper.SetBit(ref sRowIndex, 1, block.GetBit(subBlockIndex * subBlockSize + subBlockSize - 1));
+                BitHelper.SetBit(ref sRowIndex, 0, subBlock.GetBit(0));
+                BitHelper.SetBit(ref sRowIndex, 1, subBlock.GetBit(5));
 
                 byte sColIndex = 0;
-                for (int i = 1; i < subBlockSize - 1; i++)
+                for (int i = 0; i < subBlockResultSize; i++)
                 {
-                    Helper.SetBit(ref sColIndex, i - 1, block.GetBit(subBlockIndex * subBlockSize + i));
+                    BitHelper.SetBit(ref sColIndex, i, subBlock.GetBit(i+1));
                 }
 
                 var sRes = SBlocks[subBlocksCount - subBlockIndex - 1][sRowIndex, sColIndex];
@@ -246,7 +243,7 @@ namespace Crypto.Block
                 for (int i = 0; i < 4; i++)
                 {
                     var bit = sRes.GetBit(i);
-                    Helper.SetBit(ref result, subBlockIndex*subBlockResultSize + i, bit);
+                    BitHelper.SetBit(ref result, subBlockIndex * subBlockResultSize + i, bit);
                 }
             }
             return result;
@@ -260,17 +257,6 @@ namespace Crypto.Block
             19, 13, 30, 6, 22, 11, 4, 25,
         };
 
-        private UInt32 Permutation(UInt32 block)
-        {
-            UInt32 resultBlock = 0;
-            for (int i = 0; i < PTable.Length; i++)
-            {
-                var bit = block.GetBit(PTable[i] - 1);
-                Helper.SetBit(ref resultBlock, i, bit);
-            }
-            return resultBlock;
-        }
-
         #endregion Feistel Function
 
         #region IP Reverse
@@ -282,17 +268,6 @@ namespace Crypto.Block
             36, 4, 44, 12, 52, 20, 60, 28, 35, 3, 43, 11, 51, 19, 59, 27,
             34, 2, 42, 10, 50, 18, 58, 26, 33, 1, 41, 9, 49, 17, 57, 25
         };
-
-        private UInt64 InitialPermutationReverse(UInt64 block)
-        {
-            UInt64 resultBlock = 0;
-            for (int i = 0; i < IpRTable.Length; i++)
-            {
-                var bit = block.GetBit(IpRTable[i] - 1);
-                Helper.SetBit(ref resultBlock, i, bit);
-            }
-            return resultBlock;
-        }
 
         #endregion IP Reverse
 
@@ -310,7 +285,7 @@ namespace Crypto.Block
         {
             14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10, 23, 19, 12, 4,
             26, 8, 16, 7, 27, 20, 13, 2, 41, 52, 31, 37, 47, 55, 30, 40,
-            51, 45, 33, 48, 44, 49, 39, 56, 34, 53, 46, 42, 50, 36, 29, 32,
+            51, 45, 33, 48, 44, 49, 39, 56, 34, 53, 46, 42, 50, 36, 29, 32
         };
 
         private static readonly byte[] KeyShiftTable =
@@ -324,30 +299,17 @@ namespace Crypto.Block
 
             var roundKeys = new List<UInt64>(RoundsCount);
 
-            UInt64 pKey = 0;
-            for (int i = 0; i < PC1Table.Length; i++)
-            {
-                var bit = intKey.GetBit(PC1Table[i] - 1);
-                Helper.SetBit(ref pKey, i, bit);
-            }
+            UInt64 permKey = BlockHelper.PermutateBlock(intKey, PC1Table);
 
-            var sKey = pKey;
+            var leftHalfKey = (UInt32)(permKey >> 28);
+            var rightHalfKey = (UInt32)((permKey << 36) >> 36);
             for (int roundIndex = 0; roundIndex < RoundsCount; roundIndex++)
             {
-                var leftHalfKey = (UInt32)(sKey >> 28);
-                var rightHalfKey = (UInt32)((sKey << 36) >> 36);
-
                 leftHalfKey = RotateLeft28Bits(leftHalfKey, KeyShiftTable[roundIndex]);
                 rightHalfKey = RotateLeft28Bits(rightHalfKey, KeyShiftTable[roundIndex]);
 
-                sKey = (UInt64)leftHalfKey << 28 | rightHalfKey;
-
-                UInt64 roundKey = 0;
-                for (int i = 0; i < PC2Table.Length; i++)
-                {
-                    var bit = sKey.GetBit(PC2Table[i] - 1);
-                    Helper.SetBit(ref roundKey, i, bit);
-                }
+                var rotatedKey = (UInt64)leftHalfKey << 28 | rightHalfKey;
+                UInt64 roundKey = BlockHelper.PermutateBlock(rotatedKey, PC2Table);
                 roundKeys.Add(roundKey);
             }
 
@@ -359,13 +321,11 @@ namespace Crypto.Block
             var result = (halfKey << n) | (halfKey >> (28 - n));
             for (int i = 0; i < n; i++)
             {
-                Helper.SetBit(ref result, 28 + i, false);
+                BitHelper.SetBit(ref result, 28 + i, false);
             }
             return result;
         }
 
         #endregion Round Keys Generating
-
-
     }
 }
