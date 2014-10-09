@@ -47,10 +47,9 @@ namespace Crypto.Block
         {
             var left = block.HiWord();
             var right = block.LoWord();
-            uint temp;
             for (int i = 0; i < RoundsCount; i++)
             {
-                temp = right;
+                var temp = right;
                 right = left ^ FeistelFunc(right, _roundKeys[i]);
                 left = temp;
             }
@@ -61,10 +60,9 @@ namespace Crypto.Block
         {
             var left = block.HiWord();
             var right = block.LoWord();
-            uint temp;
             for (int i = RoundsCount - 1; i >= 0; i--)
             {
-                temp = left;
+                var temp = left;
                 left = right ^ FeistelFunc(left, _roundKeys[i]);
                 right = temp;
             }

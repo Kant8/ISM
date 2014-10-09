@@ -232,7 +232,7 @@ namespace Crypto.Block
 
                 var sRes = SBlocks[subBlocksCount - subBlockIndex - 1][sRowIndex, sColIndex];
 
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < subBlockResultSize; i++)
                 {
                     var bit = sRes.GetBit(i);
                     BitHelper.SetBit(ref result, subBlockIndex * subBlockResultSize + i, bit);
