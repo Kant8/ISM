@@ -13,5 +13,11 @@ namespace Crypto
         byte[] Encode(byte[] message);
 
         byte[] Decode(byte[] message);
+
+        byte[] PublicKey { get; set; }
+
+        byte[] PrivateKey { get; set; }
+
+        Tuple<byte[], byte[]> GenerateKeys();
     }
 }

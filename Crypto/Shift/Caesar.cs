@@ -40,6 +40,13 @@ namespace Crypto.Shift
             return Encoding.Unicode.GetBytes(decodedMessage);
         }
 
+        public byte[] PublicKey { get; set; }
+        public byte[] PrivateKey { get; set; }
+        public Tuple<byte[], byte[]> GenerateKeys()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion ICryptoCoder
 
         private int GetShift()

@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assymetric\PrimeNumbersGenerator.cs" />
+    <Compile Include="Assymetric\RSA.cs" />
     <Compile Include="Block\DES.cs" />
     <Compile Include="Block\Feistel.cs" />
     <Compile Include="Block\GOST.cs" />

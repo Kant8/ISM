@@ -41,6 +41,13 @@ namespace Crypto.Block
             return decodedMessage;
         }
 
+        public byte[] PublicKey { get; set; }
+        public byte[] PrivateKey { get; set; }
+        public Tuple<byte[], byte[]> GenerateKeys()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion ICryptoCoder
 
         private const int RoundsCount = 16;

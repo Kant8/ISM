@@ -50,6 +50,7 @@
             this.checkBoxOneKey = new System.Windows.Forms.CheckBox();
             this.checkBoxAreSame = new System.Windows.Forms.CheckBox();
             this.radioButtonGOST = new System.Windows.Forms.RadioButton();
+            this.buttonGenerateAsymKeys = new System.Windows.Forms.Button();
             this.panel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -271,7 +272,7 @@
             // 
             this.checkBoxOneKey.AutoSize = true;
             this.checkBoxOneKey.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.checkBoxOneKey.Location = new System.Drawing.Point(383, 297);
+            this.checkBoxOneKey.Location = new System.Drawing.Point(382, 262);
             this.checkBoxOneKey.Name = "checkBoxOneKey";
             this.checkBoxOneKey.Size = new System.Drawing.Size(74, 31);
             this.checkBoxOneKey.TabIndex = 5;
@@ -301,11 +302,25 @@
             this.radioButtonGOST.Text = "ГОСТ";
             this.radioButtonGOST.UseVisualStyleBackColor = true;
             // 
+            // buttonGenerateAsymKeys
+            // 
+            this.buttonGenerateAsymKeys.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonGenerateAsymKeys.Location = new System.Drawing.Point(382, 299);
+            this.buttonGenerateAsymKeys.Name = "buttonGenerateAsymKeys";
+            this.buttonGenerateAsymKeys.Size = new System.Drawing.Size(74, 48);
+            this.buttonGenerateAsymKeys.TabIndex = 3;
+            this.buttonGenerateAsymKeys.Text = "Сгенерировать ключи";
+            this.buttonGenerateAsymKeys.UseVisualStyleBackColor = true;
+            this.buttonGenerateAsymKeys.Click += new System.EventHandler(this.buttonGenerateAsymKeys_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(834, 462);
+            this.Controls.Add(this.buttonGenerateAsymKeys);
             this.Controls.Add(this.checkBoxAreSame);
             this.Controls.Add(this.checkBoxOneKey);
             this.Controls.Add(this.label6);
@@ -354,6 +369,7 @@
         private System.Windows.Forms.RadioButton radioButtonFeistel;
         private System.Windows.Forms.RadioButton radioButtonDes;
         private System.Windows.Forms.RadioButton radioButtonGOST;
+        private System.Windows.Forms.Button buttonGenerateAsymKeys;
     }
 }
 

@@ -117,5 +117,13 @@ namespace WinFormsUI
             if (_decodeCached)
                 _decodeCached = false;
         }
+
+        private void buttonGenerateAsymKeys_Click(object sender, EventArgs e)
+        {
+            var coder = GetSelectedCoder();
+            var keys = coder.GenerateKeys();
+            textBoxEncodeKey.Text = Convert.ToBase64String(keys.Item1);
+            textBoxDecodeKey.Text = Convert.ToBase64String(keys.Item2);
+        }
     }
 }

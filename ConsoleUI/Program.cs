@@ -10,14 +10,6 @@ namespace ConsoleUI
     {
         private static void Main(string[] args)
         {
-
-            UInt32 block = 198974517;
-            block.ToBitString();
-            var result = RotateLeft28Bits(block, 3);
-
-
-            return;
-
             string message = "Hello my name is Andrey." + Environment.NewLine
                              + "Привет, меня зовут Андрей." + Environment.NewLine
                              + "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" + Environment.NewLine

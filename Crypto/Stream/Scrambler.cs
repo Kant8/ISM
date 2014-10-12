@@ -49,6 +49,13 @@ namespace Crypto.Stream
             return decodedMessageBytes;
         }
 
+        public byte[] PublicKey { get; set; }
+        public byte[] PrivateKey { get; set; }
+        public Tuple<byte[], byte[]> GenerateKeys()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion ICryptoCoder
 
         private uint GetSeed()
