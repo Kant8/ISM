@@ -104,6 +104,11 @@ namespace WinFormsUI
                 checkBoxOneKey.Checked = true;
                 return new Des();
             }
+            if (radioButtonGOST.Checked)
+            {
+                checkBoxOneKey.Checked = true;
+                return new GOST();
+            }
             throw new InvalidEnumArgumentException("Не выбран алгоритм шифрования");
         }
 

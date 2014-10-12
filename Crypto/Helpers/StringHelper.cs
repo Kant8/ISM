@@ -13,7 +13,14 @@ namespace Crypto.Helpers
         public static int Mod(this int x, int m)
         {
             int r = x % m;
-            return r > 0 ? r + m : r;
+            return r < 0 ? r + m : r;
+        }
+
+        public static UInt32 AddWithMod2Pow32(this UInt32 x, UInt32 y)
+        {
+            UInt64 summ = x + y;
+            UInt64 res = summ % UInt32.MaxValue;
+            return (UInt32)res;
         }
 
         #region ToBitString

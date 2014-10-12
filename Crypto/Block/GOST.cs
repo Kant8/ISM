@@ -78,31 +78,17 @@ namespace Crypto.Block
 
         private UInt32 FeistelFunc(UInt32 subBlock, UInt32 roundKey)
         {
-            UInt64 expanded = BlockHelper.PermutateBlock(subBlock, ETable);
-            UInt64 xored = expanded ^ roundKey;
-            UInt32 substituted = Substitution(xored);
-            UInt32 permutated = (UInt32)BlockHelper.PermutateBlock(substituted, PTable);
-            return permutated;
+            UInt32 summ = subBlock.AddWithMod2Pow32(roundKey);
+            UInt32 substituted = Substitution(summ);
+            UInt32 rotated = substituted.RotateLeft(11);
+            return rotated;
         }
 
-        private static readonly byte[] ETable =
-        {
-            32, 1, 2, 3, 4, 5,
-            4, 5, 6, 7, 8, 9,
-            8, 9, 10, 11, 12, 13,
-            12, 13, 14, 15, 16, 17,
-            16, 17, 18, 19, 20, 21,
-            20, 21, 22, 23, 24, 25,
-            24, 25, 26, 27, 28, 29,
-            28, 29, 30, 31, 32, 1,
-        };
-
-        private UInt32 Substitution(UInt64 block)
+        private UInt32 Substitution(UInt32 block)
         {
             UInt32 result = 0;
 
-            const int subBlockResultSize = 4;
-            const int subBlockSize = 6;
+            const int subBlockSize = 4;
             const int subBlocksCount = 8;
             for (var subBlockIndex = 0; subBlockIndex < subBlocksCount; subBlockIndex++)
             {
@@ -113,34 +99,16 @@ namespace Crypto.Block
                     BitHelper.SetBit(ref subBlock, i, bit);
                 }
 
-                byte sRowIndex = 0;
-                BitHelper.SetBit(ref sRowIndex, 0, subBlock.GetBit(0));
-                BitHelper.SetBit(ref sRowIndex, 1, subBlock.GetBit(5));
+                var sRes = SBlocks[subBlocksCount - subBlockIndex - 1][subBlock];
 
-                byte sColIndex = 0;
-                for (int i = 0; i < subBlockResultSize; i++)
-                {
-                    BitHelper.SetBit(ref sColIndex, i, subBlock.GetBit(i + 1));
-                }
-
-                var sRes = SBlocks[subBlocksCount - subBlockIndex - 1][sRowIndex, sColIndex];
-
-                for (int i = 0; i < subBlockResultSize; i++)
+                for (int i = 0; i < subBlockSize; i++)
                 {
                     var bit = sRes.GetBit(i);
-                    BitHelper.SetBit(ref result, subBlockIndex * subBlockResultSize + i, bit);
+                    BitHelper.SetBit(ref result, subBlockIndex * subBlockSize + i, bit);
                 }
             }
             return result;
         }
-
-        private static readonly byte[] PTable =
-        {
-            16, 7, 20, 21, 29, 12, 28, 17,
-            1, 15, 23, 26, 5, 18, 31, 10,
-            2, 8, 24, 14, 32, 27, 3, 9,
-            19, 13, 30, 6, 22, 11, 4, 25,
-        };
 
         #endregion Feistel Function
 
