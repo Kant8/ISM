@@ -48,7 +48,7 @@ namespace Crypto.Block
 
         private UInt64 EncodeBlock(UInt64 block)
         {
-            UInt64 ipBlock = BlockHelper.PermutateBlock(block, IpTable);
+            UInt64 ipBlock = BlockHelper.PermutateBlock(block, IpTable, false);
 
             UInt32 left = ipBlock.HiWord();
             UInt32 right = ipBlock.LoWord();
@@ -61,13 +61,13 @@ namespace Crypto.Block
 
             UInt64 feistelBlock = left.Combine(right);
 
-            UInt64 encodedBlock = BlockHelper.PermutateBlock(feistelBlock, IpRTable);
+            UInt64 encodedBlock = BlockHelper.PermutateBlock(feistelBlock, IpRTable, false);
             return encodedBlock;
         }
 
         private UInt64 DecodeBlock(UInt64 block)
         {
-            UInt64 ipBlock = BlockHelper.PermutateBlock(block, IpTable);
+            UInt64 ipBlock = BlockHelper.PermutateBlock(block, IpTable, false);
 
             UInt32 left = ipBlock.HiWord();
             UInt32 right = ipBlock.LoWord();
@@ -80,7 +80,7 @@ namespace Crypto.Block
 
             UInt64 feistelBlock = left.Combine(right);
 
-            UInt64 encodedBlock = BlockHelper.PermutateBlock(feistelBlock, IpRTable);
+            UInt64 encodedBlock = BlockHelper.PermutateBlock(feistelBlock, IpRTable, false);
             return encodedBlock;
         }
 
@@ -111,10 +111,10 @@ namespace Crypto.Block
 
         private UInt32 FeistelFunc(UInt32 subBlock, UInt64 roundKey)
         {
-            UInt64 expanded = BlockHelper.PermutateBlock(subBlock, ETable);
+            UInt64 expanded = BlockHelper.PermutateBlock(subBlock, ETable, false);
             UInt64 xored = expanded ^ roundKey;
             UInt32 substituted = Substitution(xored);
-            UInt32 permutated = (UInt32)BlockHelper.PermutateBlock(substituted, PTable);
+            UInt32 permutated = (UInt32)BlockHelper.PermutateBlock(substituted, PTable, false);
             return permutated;
         }
 
@@ -300,7 +300,7 @@ namespace Crypto.Block
 
             var roundKeys = new List<UInt64>(RoundsCount);
 
-            UInt64 permKey = BlockHelper.PermutateBlock(intKey, PC1Table);
+            UInt64 permKey = BlockHelper.PermutateBlock(intKey, PC1Table, false);
 
             var leftHalfKey = (UInt32)(permKey >> 28);
             var rightHalfKey = (UInt32)((permKey << 36) >> 36);
@@ -310,7 +310,7 @@ namespace Crypto.Block
                 rightHalfKey = RotateLeft28Bits(rightHalfKey, KeyShiftTable[roundIndex]);
 
                 var rotatedKey = (UInt64)leftHalfKey << 28 | rightHalfKey;
-                UInt64 roundKey = BlockHelper.PermutateBlock(rotatedKey, PC2Table);
+                UInt64 roundKey = BlockHelper.PermutateBlock(rotatedKey, PC2Table, false);
                 roundKeys.Add(roundKey);
             }
 

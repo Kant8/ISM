@@ -50,12 +50,13 @@ namespace Crypto.Helpers
 
         #region Permutate
 
-        public static UInt64 PermutateBlock(UInt64 block, byte[] table)
+        public static UInt64 PermutateBlock(UInt64 block, byte[] table,
+            bool startFrom0 = true)
         {
             UInt64 resultBlock = 0;
             for (int i = 0; i < table.Length; i++)
             {
-                var bit = block.GetBit(table[i] - 1);
+                var bit = block.GetBit(startFrom0 ? table[i] : table[i] - 1);
                 BitHelper.SetBit(ref resultBlock, i, bit);
             }
             return resultBlock;

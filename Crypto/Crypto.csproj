@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Block\DES.cs" />
     <Compile Include="Block\Feistel.cs" />
+    <Compile Include="Block\GOST.cs" />
     <Compile Include="Helpers\BitHelper.cs" />
     <Compile Include="Helpers\BlockHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
