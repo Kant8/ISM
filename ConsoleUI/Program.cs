@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text;
 using Crypto;
+using Crypto.Assymetric;
 using Crypto.Helpers;
 using Crypto.Stream;
 
@@ -10,6 +12,19 @@ namespace ConsoleUI
     {
         private static void Main(string[] args)
         {
+            var png = new PrimeNumberGenerator();
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var res = png.NextPrimeBigInteger();
+
+            sw.Stop();
+
+            Console.WriteLine(res.ToString());
+            Console.WriteLine("Elapsed time: " + sw.ElapsedMilliseconds + " ms.");
+            Console.ReadLine();
+            return;
+
+
             string message = "Hello my name is Andrey." + Environment.NewLine
                              + "Привет, меня зовут Андрей." + Environment.NewLine
                              + "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" + Environment.NewLine

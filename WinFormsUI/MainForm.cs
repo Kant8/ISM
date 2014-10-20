@@ -46,10 +46,18 @@ namespace WinFormsUI
             {
                 var coder = GetSelectedCoder();
 
+                if (checkBoxOneKey.Checked)
+                    coder.Key = textBoxEncodeKey.Text;
+                else
+                {
+                    if (radioButtonEncrypt.Checked)
+                        coder.CryptoKey.EncodeKeyFromString(textBoxEncodeKey.Text);
+                    else
+                        coder.CryptoKey.DecodeKeyFromString(textBoxDecodeKey.Text);
+                }
+
                 if (radioButtonEncrypt.Checked)
                 {
-                    coder.Key = textBoxEncodeKey.Text;
-
                     _encodedMsg = coder.Encode(textBoxMessage.Text.GetUtf16Bytes());
 
                     textBoxCrypted.Text = _encodedMsg.GetUtf16String();
@@ -59,9 +67,6 @@ namespace WinFormsUI
                 }
                 else
                 {
-                    coder.Key = checkBoxOneKey.Checked 
-                        ? textBoxEncodeKey.Text 
-                        : textBoxDecodeKey.Text;
                     var encodedMsg = _decodeCached
                         ? _encodedMsg
                         : textBoxCrypted.Text.GetUtf16Bytes();
@@ -121,9 +126,9 @@ namespace WinFormsUI
         private void buttonGenerateAsymKeys_Click(object sender, EventArgs e)
         {
             var coder = GetSelectedCoder();
-            var keys = coder.GenerateKeys();
-            textBoxEncodeKey.Text = Convert.ToBase64String(keys.Item1);
-            textBoxDecodeKey.Text = Convert.ToBase64String(keys.Item2);
+            coder.GenerateCryptoKey();
+            textBoxEncodeKey.Text = coder.CryptoKey.EncodeKeyToString();
+            textBoxDecodeKey.Text = coder.CryptoKey.DecodeKeyToString();
         }
     }
 }

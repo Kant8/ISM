@@ -14,10 +14,8 @@ namespace Crypto
 
         byte[] Decode(byte[] message);
 
-        byte[] PublicKey { get; set; }
+        ICryptoKey CryptoKey { get; }
 
-        byte[] PrivateKey { get; set; }
-
-        Tuple<byte[], byte[]> GenerateKeys();
+        void GenerateCryptoKey();
     }
 }

@@ -49,9 +49,9 @@ namespace Crypto.Stream
             return decodedMessageBytes;
         }
 
-        public byte[] PublicKey { get; set; }
-        public byte[] PrivateKey { get; set; }
-        public Tuple<byte[], byte[]> GenerateKeys()
+        public ICryptoKey CryptoKey { get; set; }
+
+        public void GenerateCryptoKey()
         {
             throw new NotImplementedException();
         }
