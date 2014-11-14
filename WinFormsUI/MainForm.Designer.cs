@@ -39,6 +39,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioButtonGOST = new System.Windows.Forms.RadioButton();
             this.radioButtonDes = new System.Windows.Forms.RadioButton();
             this.radioButtonFeistel = new System.Windows.Forms.RadioButton();
             this.radioButtonScrambler = new System.Windows.Forms.RadioButton();
@@ -49,8 +50,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.checkBoxOneKey = new System.Windows.Forms.CheckBox();
             this.checkBoxAreSame = new System.Windows.Forms.CheckBox();
-            this.radioButtonGOST = new System.Windows.Forms.RadioButton();
             this.buttonGenerateAsymKeys = new System.Windows.Forms.Button();
+            this.radioButtonRSA = new System.Windows.Forms.RadioButton();
             this.panel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -172,6 +173,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.radioButtonRSA);
             this.groupBox1.Controls.Add(this.radioButtonGOST);
             this.groupBox1.Controls.Add(this.radioButtonDes);
             this.groupBox1.Controls.Add(this.radioButtonFeistel);
@@ -183,6 +185,17 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Алгоритмы";
+            // 
+            // radioButtonGOST
+            // 
+            this.radioButtonGOST.AutoSize = true;
+            this.radioButtonGOST.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.radioButtonGOST.Location = new System.Drawing.Point(361, 19);
+            this.radioButtonGOST.Name = "radioButtonGOST";
+            this.radioButtonGOST.Size = new System.Drawing.Size(39, 30);
+            this.radioButtonGOST.TabIndex = 4;
+            this.radioButtonGOST.Text = "ГОСТ";
+            this.radioButtonGOST.UseVisualStyleBackColor = true;
             // 
             // radioButtonDes
             // 
@@ -291,17 +304,6 @@
             this.checkBoxAreSame.Text = "Совпадение";
             this.checkBoxAreSame.UseVisualStyleBackColor = true;
             // 
-            // radioButtonGOST
-            // 
-            this.radioButtonGOST.AutoSize = true;
-            this.radioButtonGOST.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.radioButtonGOST.Location = new System.Drawing.Point(361, 19);
-            this.radioButtonGOST.Name = "radioButtonGOST";
-            this.radioButtonGOST.Size = new System.Drawing.Size(39, 30);
-            this.radioButtonGOST.TabIndex = 4;
-            this.radioButtonGOST.Text = "ГОСТ";
-            this.radioButtonGOST.UseVisualStyleBackColor = true;
-            // 
             // buttonGenerateAsymKeys
             // 
             this.buttonGenerateAsymKeys.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -314,6 +316,17 @@
             this.buttonGenerateAsymKeys.Text = "Сгенерировать ключи";
             this.buttonGenerateAsymKeys.UseVisualStyleBackColor = true;
             this.buttonGenerateAsymKeys.Click += new System.EventHandler(this.buttonGenerateAsymKeys_Click);
+            // 
+            // radioButtonRSA
+            // 
+            this.radioButtonRSA.AutoSize = true;
+            this.radioButtonRSA.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.radioButtonRSA.Location = new System.Drawing.Point(432, 19);
+            this.radioButtonRSA.Name = "radioButtonRSA";
+            this.radioButtonRSA.Size = new System.Drawing.Size(33, 30);
+            this.radioButtonRSA.TabIndex = 5;
+            this.radioButtonRSA.Text = "RSA";
+            this.radioButtonRSA.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -370,6 +383,7 @@
         private System.Windows.Forms.RadioButton radioButtonDes;
         private System.Windows.Forms.RadioButton radioButtonGOST;
         private System.Windows.Forms.Button buttonGenerateAsymKeys;
+        private System.Windows.Forms.RadioButton radioButtonRSA;
     }
 }
 

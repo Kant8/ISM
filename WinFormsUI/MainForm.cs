@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Crypto;
+using Crypto.Assymetric;
 using Crypto.Block;
 using Crypto.Helpers;
 using Crypto.Shift;
@@ -113,6 +114,11 @@ namespace WinFormsUI
             {
                 checkBoxOneKey.Checked = true;
                 return new GOST();
+            }
+            if (radioButtonRSA.Checked)
+            {
+                checkBoxOneKey.Checked = false;
+                return new RSA();
             }
             throw new InvalidEnumArgumentException("Не выбран алгоритм шифрования");
         }

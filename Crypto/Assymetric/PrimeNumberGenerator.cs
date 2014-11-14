@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Concurrent;
+using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
@@ -84,23 +85,24 @@ namespace Crypto.Assymetric
             var tasks = new Task<BigInteger>[4];
             for (int i = 0; i < 4; i++)
             {
-                tasks[i] = Task.Factory.StartNew(() => NextPrimeBigInt(bitLength), _cts.Token);
+                
+                tasks[i] = Task.Factory.StartNew(() => NextPrimeBigInt(bitLength, _cts.Token));
                 tasks[i].ContinueWith(t => _cts.Cancel());
             }
 
 // ReSharper disable once CoVariantArrayConversion
-            var tIndex = Task.WaitAny(tasks, _cts.Token);
+            Task.WaitAny(tasks);
 
-            return tasks[tIndex].Result;
+            return tasks.First(t => t.Result != 0).Result;
 
         }
 
-        private BigInteger NextPrimeBigInt(int bitLength = 1024)
+        private BigInteger NextPrimeBigInt(int bitLength, CancellationToken ct)
         {
             BigInteger res = BigInteger.Zero;
             do
             {
-                if (_cts.IsCancellationRequested) break;
+                if (ct.IsCancellationRequested) break;
                 res = NextBigInteger();
             } while (!CheckPrime(res, bitLength));
             return res;
