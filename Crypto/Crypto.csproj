@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assymetric\EDS.cs" />
     <Compile Include="Assymetric\PrimeNumberGenerator.cs" />
     <Compile Include="Assymetric\RSA.cs" />
     <Compile Include="Assymetric\RsaKey.cs" />

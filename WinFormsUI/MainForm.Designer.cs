@@ -31,7 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxMessage = new System.Windows.Forms.TextBox();
             this.textBoxCrypted = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelCypher = new System.Windows.Forms.Label();
             this.panel = new System.Windows.Forms.Panel();
             this.buttonGo = new System.Windows.Forms.Button();
             this.radioButtonDecrypt = new System.Windows.Forms.RadioButton();
@@ -53,6 +53,7 @@
             this.checkBoxAreSame = new System.Windows.Forms.CheckBox();
             this.buttonGenerateAsymKeys = new System.Windows.Forms.Button();
             this.buttonReset = new System.Windows.Forms.Button();
+            this.radioButtonEDS = new System.Windows.Forms.RadioButton();
             this.panel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -73,7 +74,7 @@
             this.textBoxMessage.Location = new System.Drawing.Point(12, 29);
             this.textBoxMessage.Multiline = true;
             this.textBoxMessage.Name = "textBoxMessage";
-            this.textBoxMessage.Size = new System.Drawing.Size(365, 205);
+            this.textBoxMessage.Size = new System.Drawing.Size(365, 212);
             this.textBoxMessage.TabIndex = 1;
             // 
             // textBoxCrypted
@@ -83,18 +84,18 @@
             this.textBoxCrypted.Location = new System.Drawing.Point(462, 29);
             this.textBoxCrypted.Multiline = true;
             this.textBoxCrypted.Name = "textBoxCrypted";
-            this.textBoxCrypted.Size = new System.Drawing.Size(365, 205);
+            this.textBoxCrypted.Size = new System.Drawing.Size(365, 212);
             this.textBoxCrypted.TabIndex = 3;
             this.textBoxCrypted.TextChanged += new System.EventHandler(this.textBoxCrypted_TextChanged);
             // 
-            // label2
+            // labelCypher
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(459, 13);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(150, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Зашифрованное сообщение";
+            this.labelCypher.AutoSize = true;
+            this.labelCypher.Location = new System.Drawing.Point(459, 13);
+            this.labelCypher.Name = "labelCypher";
+            this.labelCypher.Size = new System.Drawing.Size(150, 13);
+            this.labelCypher.TabIndex = 2;
+            this.labelCypher.Text = "Зашифрованное сообщение";
             // 
             // panel
             // 
@@ -174,6 +175,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.radioButtonEDS);
             this.groupBox1.Controls.Add(this.radioButtonRSA);
             this.groupBox1.Controls.Add(this.radioButtonGOST);
             this.groupBox1.Controls.Add(this.radioButtonDes);
@@ -342,6 +344,18 @@
             this.buttonReset.UseVisualStyleBackColor = true;
             this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
+            // radioButtonEDS
+            // 
+            this.radioButtonEDS.AutoSize = true;
+            this.radioButtonEDS.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.radioButtonEDS.Location = new System.Drawing.Point(504, 19);
+            this.radioButtonEDS.Name = "radioButtonEDS";
+            this.radioButtonEDS.Size = new System.Drawing.Size(34, 30);
+            this.radioButtonEDS.TabIndex = 6;
+            this.radioButtonEDS.Text = "ЭЦП";
+            this.radioButtonEDS.UseVisualStyleBackColor = true;
+            this.radioButtonEDS.CheckedChanged += new System.EventHandler(this.radioButtonEDS_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -358,10 +372,11 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel);
             this.Controls.Add(this.textBoxCrypted);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelCypher);
             this.Controls.Add(this.textBoxMessage);
             this.Controls.Add(this.label1);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Crypto";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel.ResumeLayout(false);
@@ -378,7 +393,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxMessage;
         private System.Windows.Forms.TextBox textBoxCrypted;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelCypher;
         private System.Windows.Forms.Panel panel;
         private System.Windows.Forms.Button buttonGo;
         private System.Windows.Forms.RadioButton radioButtonDecrypt;
@@ -400,6 +415,7 @@
         private System.Windows.Forms.Button buttonGenerateAsymKeys;
         private System.Windows.Forms.RadioButton radioButtonRSA;
         private System.Windows.Forms.Button buttonReset;
+        private System.Windows.Forms.RadioButton radioButtonEDS;
     }
 }
 

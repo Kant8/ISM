@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +15,7 @@ using Crypto.Block;
 using Crypto.Helpers;
 using Crypto.Shift;
 using Crypto.Stream;
+using RSA = Crypto.Assymetric.RSA;
 
 namespace WinFormsUI
 {
@@ -30,12 +32,8 @@ namespace WinFormsUI
         private void MainForm_Load(object sender, EventArgs e)
         {
             textBoxMessage.Clear();
-            textBoxMessage.Text += "The quick brown fox jumps over the lazy dog";
-            textBoxMessage.Text += Environment.NewLine;
-            textBoxMessage.Text += "Съешь же ещё этих мягких французских булок да выпей чаю.";
-            textBoxMessage.Text += Environment.NewLine;
-            textBoxMessage.Text += "1234567890~`!@#$%^&*()_-+={}[]:;\"'<>,.?/|\\";
-            textBoxEncodeKey.Text += "123456789";
+            textBoxMessage.Text = TestText;
+            textBoxEncodeKey.Text = "123456789";
 
             textBoxMessage.SelectionLength = 0;
 
@@ -57,6 +55,42 @@ namespace WinFormsUI
                     else
                         coder.CryptoKey.DecodeKeyFromString(textBoxDecodeKey.Text);
                 }
+
+                #region EDS
+
+                if (radioButtonEDS.Checked)
+                {
+                    
+
+                    if (radioButtonEncrypt.Checked)
+                    {
+                        var eds = new EDS {SignKey = textBoxDecodeKey.Text};
+                        //eds.CheckKey = textBoxEncodeKey.Text;
+                        textBoxCrypted.Text = eds.Sign(textBoxMessage.Text);
+                        checkBoxAreSame.Checked = false;
+                    }
+                    else
+                    {
+                        var encodedMsg = textBoxCrypted.Text.GetUtf16Bytes();
+
+                        var eds = new EDS {CheckKey = textBoxEncodeKey.Text};
+                        var signed = eds.CheckSign(textBoxMessage.Text, textBoxCrypted.Text);
+
+                        if (signed)
+                        {
+                            checkBoxAreSame.Checked = true;
+                            MessageBox.Show("Подпись верна");
+                        }
+                        else
+                        {
+                            checkBoxAreSame.Checked = false;
+                            MessageBox.Show("Подпись или текст изменены!");
+                        }
+                    }
+                    return;
+                }
+
+                #endregion EDS
 
                 if (radioButtonEncrypt.Checked)
                 {
@@ -116,7 +150,7 @@ namespace WinFormsUI
                 checkBoxOneKey.Checked = true;
                 return new GOST();
             }
-            if (radioButtonRSA.Checked)
+            if (radioButtonRSA.Checked || radioButtonEDS.Checked)
             {
                 checkBoxOneKey.Checked = false;
                 return new RSA();
@@ -143,19 +177,30 @@ namespace WinFormsUI
             }
             textBoxEncodeKey.Text = coder.CryptoKey.EncodeKeyToString();
             textBoxDecodeKey.Text = coder.CryptoKey.DecodeKeyToString();
-            if (coder.CryptoKey is RsaKey)
-                MessageBox.Show("Длина ключа: " + Math.Floor(BigInteger.Log(((RsaKey)coder.CryptoKey).N, 2)));
+            //if (coder.CryptoKey is RsaKey)
+            //    MessageBox.Show("Длина ключа: " + Math.Floor(BigInteger.Log(((RsaKey)coder.CryptoKey).N, 2)));
         }
 
         private void buttonReset_Click(object sender, EventArgs e)
         {
             textBoxMessage.Clear();
-            textBoxMessage.Text += "The quick brown fox jumps over the lazy dog";
-            textBoxMessage.Text += Environment.NewLine;
-            textBoxMessage.Text += "Съешь же ещё этих мягких французских булок да выпей чаю.";
-            textBoxMessage.Text += Environment.NewLine;
-            textBoxMessage.Text += "1234567890~`!@#$%^&*()_-+={}[]:;\"'<>,.?/|\\";
+            textBoxMessage.Text = TestText;
             textBoxCrypted.Clear();
+        }
+
+        private const string TestText = "The quick brown fox jumps over the lazy dog" + "\r\n"
+            + "1234567890~`!@#$%^&*()_-+={}[]:;\"'<>,.?/|\\";
+
+        private void radioButtonEDS_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonEDS.Checked)
+            {
+                labelCypher.Text = "Подпись";
+            }
+            else
+            {
+                labelCypher.Text = "Зашифрованное сообщение";
+            }
         }
     }
 }
