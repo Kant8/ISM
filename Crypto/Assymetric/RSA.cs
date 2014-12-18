@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using Crypto.Helpers;
 
 namespace Crypto.Assymetric
@@ -29,7 +30,7 @@ namespace Crypto.Assymetric
             //    throw new ArgumentException("Текст слишком велик");
             //var encodedBlock = EncodeBlock(block);
             //return encodedBlock.ToByteArray();
-
+            
             var blocks = SplitInBlocks(message);
 
             var encodedBlocks = blocks.Select(EncodeBlock).ToList();
@@ -67,22 +68,41 @@ namespace Crypto.Assymetric
         {
             RsaKey = new RsaKey();
 
-            var png = new PrimeNumberGenerator();
-            var p = png.NextPrimeBigInteger();
-            png = new PrimeNumberGenerator();
-            var q = png.NextPrimeBigInteger();
+            while (true)
+            {
 
-            var n = p*q;
+                var png = new PrimeNumberGenerator();
+                var p = png.NextPrimeBigInteger();
+                png = new PrimeNumberGenerator();
+                var q = png.NextPrimeBigInteger();
 
-            var eilerF = (p - 1)*(q - 1);
+                var n = p*q;
 
-            const int e = 65537;
+                var eilerF = (p - 1)*(q - 1);
 
-            var d = FindD(e, eilerF);
+                const int e = 65537;
 
-            RsaKey.D = d;
-            RsaKey.E = e;
-            RsaKey.N = n;
+                var d = FindD(e, eilerF);
+
+                RsaKey.D = d;
+                RsaKey.E = e;
+                RsaKey.N = n;
+
+
+                var rsa = new RSA();
+                ((RsaKey)rsa.CryptoKey).D = RsaKey.D;
+                ((RsaKey)rsa.CryptoKey).E = RsaKey.E;
+                ((RsaKey)rsa.CryptoKey).N = RsaKey.N;
+
+                var message = "Тест шифрования RSAТест шифрования RSAТест шифрования RSAТест шифрования RSA" +
+                              "Тест шифрования RSAТест шифрования RSAТест шифрования RSAТест шифрования RSA";
+                var messageBytes = message.GetUtf16Bytes();
+                var encoded = rsa.Encode(messageBytes);
+                var decoded = rsa.Decode(encoded);
+                decoded = decoded.Trim(messageBytes.Length);
+                var decodedMessage = decoded.GetUtf16String();
+                if (message == decodedMessage) return;
+            }
         }
 
         #endregion ICryptoCoder
