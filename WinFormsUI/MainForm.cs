@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -132,9 +133,29 @@ namespace WinFormsUI
         private void buttonGenerateAsymKeys_Click(object sender, EventArgs e)
         {
             var coder = GetSelectedCoder();
-            coder.GenerateCryptoKey();
+            try
+            {
+                coder.GenerateCryptoKey();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Этот алгоритм не умеет генерировать ключи");
+            }
             textBoxEncodeKey.Text = coder.CryptoKey.EncodeKeyToString();
             textBoxDecodeKey.Text = coder.CryptoKey.DecodeKeyToString();
+            if (coder.CryptoKey is RsaKey)
+                MessageBox.Show("Длина ключа: " + Math.Floor(BigInteger.Log(((RsaKey)coder.CryptoKey).N, 2)));
+        }
+
+        private void buttonReset_Click(object sender, EventArgs e)
+        {
+            textBoxMessage.Clear();
+            textBoxMessage.Text += "The quick brown fox jumps over the lazy dog";
+            textBoxMessage.Text += Environment.NewLine;
+            textBoxMessage.Text += "Съешь же ещё этих мягких французских булок да выпей чаю.";
+            textBoxMessage.Text += Environment.NewLine;
+            textBoxMessage.Text += "1234567890~`!@#$%^&*()_-+={}[]:;\"'<>,.?/|\\";
+            textBoxCrypted.Clear();
         }
     }
 }

@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Security;
 using Crypto.Helpers;
 
 namespace Crypto.Assymetric
@@ -27,22 +24,34 @@ namespace Crypto.Assymetric
 
         public byte[] Encode(byte[] message)
         {
-            var blocks = BlockHelper.SplitInBlocks(message);
+            //var block = new BigInteger(message);
+            //if (block >= RsaKey.N)
+            //    throw new ArgumentException("Текст слишком велик");
+            //var encodedBlock = EncodeBlock(block);
+            //return encodedBlock.ToByteArray();
 
-            var encodedBlocks = blocks.Select(EncodeBlock).ToArray();
+            var blocks = SplitInBlocks(message);
 
-            var encodedMessage = BlockHelper.CombineBlocks(encodedBlocks);
+            var encodedBlocks = blocks.Select(EncodeBlock).ToList();
+
+            var encodedMessage = CombineBlocks(encodedBlocks);
 
             return encodedMessage;
         }
-
+        
         public byte[] Decode(byte[] message)
         {
-            var blocks = BlockHelper.SplitInBlocks(message);
+            //var block = new BigInteger(message);
+            //if (block >= RsaKey.N)
+            //    throw new ArgumentException("Текст слишком велик");
+            //var decodedBlock = DecodeBlock(block);
+            //return decodedBlock.ToByteArray();
 
-            var decodedBlocks = blocks.Select(DecodeBlock).ToArray();
+            var blocks = SplitInBlocks(message);
 
-            var decodedMessage = BlockHelper.CombineBlocks(decodedBlocks);
+            var decodedBlocks = blocks.Select(DecodeBlock).ToList();
+
+            var decodedMessage = CombineBlocks(decodedBlocks);
 
             return decodedMessage;
         }
@@ -60,6 +69,7 @@ namespace Crypto.Assymetric
 
             var png = new PrimeNumberGenerator();
             var p = png.NextPrimeBigInteger();
+            png = new PrimeNumberGenerator();
             var q = png.NextPrimeBigInteger();
 
             var n = p*q;
@@ -101,20 +111,20 @@ namespace Crypto.Assymetric
             return x;
         }
 
-        private UInt64 EncodeBlock(UInt64 block)
+        private BigInteger EncodeBlock(BigInteger block)
         {
-            var m = new BigInteger(block);
-            var encoded = BigInteger.ModPow(m, RsaKey.E, RsaKey.N);
-            return 0;
+            var encoded = BigInteger.ModPow(block, RsaKey.E, RsaKey.N);
+            return encoded;
 
         }
 
-        private UInt64 DecodeBlock(UInt64 block)
+        private BigInteger DecodeBlock(BigInteger block)
         {
-            return 0;
+            var decoded = BigInteger.ModPow(block, RsaKey.D, RsaKey.N);
+            return decoded;
         }
 
-        private List<BigInteger> Split(byte[] message)
+        private List<BigInteger> SplitInBlocksOLD(byte[] message)
         {
             var bitLength = (int) Math.Ceiling(BigInteger.Log(RsaKey.N, 2));
             bitLength--;
@@ -160,26 +170,19 @@ namespace Crypto.Assymetric
         #region Common
 
         /// <summary>
-        /// Очень важно!
-        /// Разбиваем исходный текст на блоки по log2(n) бит
+        /// split per log2(n)
         /// </summary>
-        private List<BigInteger> DivideTextOnBlocks(byte[] message)
+        private List<BigInteger> SplitInBlocks(byte[] message)
         {
             var res = new List<BigInteger>();
-            //Определяем количество бит в блоке по формуле х = [log2(n)]
             _bitsPerBlock = (int)Math.Floor(BigInteger.Log(RsaKey.N, 2));
-            //Определяем количество байт в блоке
             _bytesPerBlock = (int)Math.Ceiling((double)_bitsPerBlock / 8);
 
-            //Преобразуем байты исходного текста в биты
             var sourceBits = new BitArray(message);
-            //Определяем количество блоков
             _blocksCount = (int)Math.Ceiling((double)sourceBits.Count / _bitsPerBlock);
 
-            //Определяем количество бит в последнем блоке
             var index = sourceBits.Count % _bitsPerBlock;
 
-            //Формируем блоки
             for (var i = 0; i < _blocksCount; i++)
             {
                 var tempBits = new BitArray(_bitsPerBlock);
@@ -200,9 +203,7 @@ namespace Crypto.Assymetric
                     }
                 }
 
-                //Блок бит преобразуем в блок байт
                 tempBits.CopyTo(tempBytes, 0);
-                //Блок байт преобразуем в число BigInteger и далее шифруем/дешифруем такие числа
                 res.Add(new BigInteger(tempBytes));
             }
             return res;

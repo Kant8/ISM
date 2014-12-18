@@ -117,12 +117,12 @@ namespace Crypto.Helpers
 
         public static string GetUtf16String(this byte[] arr)
         {
-            return Encoding.Unicode.GetString(arr);
+            return Encoding.UTF8.GetString(arr);
         }
 
         public static byte[] GetUtf16Bytes(this string str)
         {
-            return Encoding.Unicode.GetBytes(str);
+            return Encoding.UTF8.GetBytes(str);
         }
     }
 }

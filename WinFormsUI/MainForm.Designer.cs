@@ -39,6 +39,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioButtonRSA = new System.Windows.Forms.RadioButton();
             this.radioButtonGOST = new System.Windows.Forms.RadioButton();
             this.radioButtonDes = new System.Windows.Forms.RadioButton();
             this.radioButtonFeistel = new System.Windows.Forms.RadioButton();
@@ -51,7 +52,7 @@
             this.checkBoxOneKey = new System.Windows.Forms.CheckBox();
             this.checkBoxAreSame = new System.Windows.Forms.CheckBox();
             this.buttonGenerateAsymKeys = new System.Windows.Forms.Button();
-            this.radioButtonRSA = new System.Windows.Forms.RadioButton();
+            this.buttonReset = new System.Windows.Forms.Button();
             this.panel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -186,6 +187,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Алгоритмы";
             // 
+            // radioButtonRSA
+            // 
+            this.radioButtonRSA.AutoSize = true;
+            this.radioButtonRSA.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.radioButtonRSA.Location = new System.Drawing.Point(432, 19);
+            this.radioButtonRSA.Name = "radioButtonRSA";
+            this.radioButtonRSA.Size = new System.Drawing.Size(33, 30);
+            this.radioButtonRSA.TabIndex = 5;
+            this.radioButtonRSA.Text = "RSA";
+            this.radioButtonRSA.UseVisualStyleBackColor = true;
+            // 
             // radioButtonGOST
             // 
             this.radioButtonGOST.AutoSize = true;
@@ -317,22 +329,25 @@
             this.buttonGenerateAsymKeys.UseVisualStyleBackColor = true;
             this.buttonGenerateAsymKeys.Click += new System.EventHandler(this.buttonGenerateAsymKeys_Click);
             // 
-            // radioButtonRSA
+            // buttonReset
             // 
-            this.radioButtonRSA.AutoSize = true;
-            this.radioButtonRSA.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.radioButtonRSA.Location = new System.Drawing.Point(432, 19);
-            this.radioButtonRSA.Name = "radioButtonRSA";
-            this.radioButtonRSA.Size = new System.Drawing.Size(33, 30);
-            this.radioButtonRSA.TabIndex = 5;
-            this.radioButtonRSA.Text = "RSA";
-            this.radioButtonRSA.UseVisualStyleBackColor = true;
+            this.buttonReset.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonReset.Location = new System.Drawing.Point(384, 211);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(72, 30);
+            this.buttonReset.TabIndex = 3;
+            this.buttonReset.Text = "Очистить";
+            this.buttonReset.UseVisualStyleBackColor = true;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(834, 462);
+            this.Controls.Add(this.buttonReset);
             this.Controls.Add(this.buttonGenerateAsymKeys);
             this.Controls.Add(this.checkBoxAreSame);
             this.Controls.Add(this.checkBoxOneKey);
@@ -384,6 +399,7 @@
         private System.Windows.Forms.RadioButton radioButtonGOST;
         private System.Windows.Forms.Button buttonGenerateAsymKeys;
         private System.Windows.Forms.RadioButton radioButtonRSA;
+        private System.Windows.Forms.Button buttonReset;
     }
 }
 

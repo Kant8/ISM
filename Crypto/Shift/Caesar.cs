@@ -14,7 +14,7 @@ namespace Crypto.Shift
 
         public byte[] Encode(byte[] message)
         {
-            var chars = Encoding.Unicode.GetChars(message);
+            var chars = Encoding.UTF8.GetChars(message);
             var shift = GetShift();
 
             var encodedMessage = new char[chars.Length];
@@ -23,12 +23,12 @@ namespace Crypto.Shift
                 var encodedC = chars[i] + shift;
                 encodedMessage[i] = (char)encodedC.Mod(AlphabetSize);
             }
-            return Encoding.Unicode.GetBytes(encodedMessage);
+            return Encoding.UTF8.GetBytes(encodedMessage);
         }
 
         public byte[] Decode(byte[] message)
         {
-            var chars = Encoding.Unicode.GetChars(message);
+            var chars = Encoding.UTF8.GetChars(message);
             var shift = GetShift();
 
             var decodedMessage = new char[chars.Length];
@@ -37,7 +37,7 @@ namespace Crypto.Shift
                 var decodedC = chars[i] - shift;
                 decodedMessage[i] = (char)decodedC.Mod(AlphabetSize);
             }
-            return Encoding.Unicode.GetBytes(decodedMessage);
+            return Encoding.UTF8.GetBytes(decodedMessage);
         }
 
         public ICryptoKey CryptoKey { get; set; }
